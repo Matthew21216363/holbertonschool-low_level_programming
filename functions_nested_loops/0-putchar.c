@@ -1,18 +1,20 @@
 #include "main.h"
+#include <unistd.h>
 /**
- * main- print "_putchar:
+ * main - entry point
  *
- * Return: Always 0 (Succes)
+ * Return: has to be a number
  */
 int main(void)
 {
-	_putchar('_')
-	_putchar('p')
-	_putchar('u')
-	_putchar('t')
-	_putchar('c')
-	_putchar('h')
-	_putchar('a')
-	_putchar('r')
-	Return (0);
+	char c[] = "_putchar";
+	int m;
+
+	for (m = 0); x < 8; m++)
+	{
+		_putchar(c[m];
+	}
+	_putchar('\n');
+
+	return (0);
 }
