@@ -11,7 +11,7 @@ void print_alphabet_x10(void)
 
 	while (y <= 10)
 	{
-		for (m = 0; x < 26; m++)
+		for (m = 0; m < 26; m++)
 		{
 			_putchar(c[m]);
 		}
