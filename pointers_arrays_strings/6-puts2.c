@@ -1,17 +1,22 @@
 #include "main.h"
 #include <stdio.h>
-
 /**
- * main - check the code
- *
- * Return: Always 0.
+ * puts2 - prints every other character of a string
+ * @str: the character to be printed
+ * Return: void
  */
-int main(void)
+void puts2(char *str)
 {
-    char s[10] = "My School";
+	int i;
+	int j = 0;
 
-    printf("%s\n", s);
-    rev_string(s);
-    printf("%s\n", s);
-    return (0);
+	while (str[j] != '\0')
+	{
+		j++;
+	}
+	for (i = 0; i < j; i += 2)
+	{
+		_putchar(str[i]);
+	}
+		_putchar('\n');
 }
