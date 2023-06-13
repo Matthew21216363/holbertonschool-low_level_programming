@@ -1,4 +1,5 @@
-#include"main.h"
+#include "main.h"
+
 /**
  * _memcpy - function
  * @dest: new string
@@ -8,15 +9,15 @@
  */
 char *_memcpy(char *dest, char *src, unsigned int n)
 {
-	unsigned int j, d;
+	unsigned int x, y;
 
-	for (j = 0, d = 0; j < d && src[d]; j++, d++)
+	for (x = 0, y = 0; x < n && src[y]; x++, y++)
 	{
-		dest[j] = src[d];
+		dest[x] = src[y];
 	}
-	for (; j < n; j++)
+	for (; x < n; x++)
 	{
-		dest[j] = '\0';
+		dest[x] = '\0';
 	}
 	return (dest);
 }
