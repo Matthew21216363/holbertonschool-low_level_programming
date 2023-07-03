@@ -17,12 +17,6 @@ printf("Error\n");
 exit(98);
 }
 
-if ((argv[4] == 0) && (argv[3]) == '/')
-{
-	printf("Error\n");
-	exit(98);
-}
-
 i = (*get_op_func(argv[2]));
 if (i == NULL)
 {
