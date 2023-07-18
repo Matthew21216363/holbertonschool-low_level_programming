@@ -1,35 +1,24 @@
 #include "main.h"
-
 /**
- * append_text_to_file - adds text at the end of the file
- * @filename: pointer to file
- * @text_content: content of file
- * Return: 1
- */
-
-int append_text_to_file(const char *filename, char *text_content)
+ * append_text_to_file - Appends text to a file
+ * @fn: Pointer to file name
+ * @tc: String to add to end of file
+ * Return: -1 if failure or 1
+*/
+int append_text_to_file(const char *fn, char *tc)
 {
-	/* Declare Variables */
-	int fd;
-	ssize_t bytesWritten;
-
-	if (filename == NULL)
-		return (-1);
-
-	fd = open(filename, O_WRONLY | O_APPEND | O_CREAT, 0600);
-	if (fd == -1)
-		return (-1); /* Error if file won't open */
-
-	if (text_content != NULL)
-	{
-		bytesWritten = write(fd, text_content, strlen(text_content));
-		if (bytesWritten == -1)
-		{
-			close(fd);
-			return (-1);
-		}
-	}
-
-	close(fd);
-	return (1);
+int o, w, len = 0;
+if (fn == NULL)
+return (-1);
+if (tc != NULL)
+{
+for (len = 0; tc[len];)
+len++;
+}
+o = open(fn, O_WRONLY | O_APPEND);
+w = write(o, tc, len);
+if (o == -1 || w == -1)
+return (-1);
+close(o);
+return (1);
 }
