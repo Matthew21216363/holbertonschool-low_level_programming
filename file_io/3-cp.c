@@ -1,62 +1,81 @@
 #include "main.h"
 /**
- * main - coppies the content of a file to another file
- * @argc: number of arguments
- * @argv: arguments
- * Return: 1
- */
-int main(int argc, char *argv[])
+ * create_buffer - Allocates 1024 bytes for a buffer
+ * @f: Nname of file buffer
+ * Return: Pointer to allocated buffer
+*/
+char *create_buffer(char *f)
 {
-	int fd_from, fd_to, bytesRead, bytesWritten;
-	char buffer[BUFFER_SIZE];
-
-	if (argc != 3)
-	{
-		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
-		exit(97);
-	}
-	fd_from = open(argv[1], O_RDONLY);
-	if (fd_from == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
-		exit(98);
-	}
-	fd_to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
-	if (fd_to == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
-		exit(99);
-	}
-	/* Read and Write at the same time */
-	while ((bytesRead = read(fd_from, buffer, BUFFER_SIZE)) > 0)
-	{
-		bytesWritten = write(fd_to, buffer, bytesRead);
-		if (bytesWritten == -1)
-		{
-			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
-			exit(99);
-		}
-	}
-	if (bytesRead == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
-		exit(98);
-	}
-	safe_close(fd_from);
-	safe_close(fd_to);
-	return (0);
+char *buffer;
+buffer = malloc(sizeof(char) * 1024);
+if (buffer == NULL)
+{
+dprintf(STDERR_FILENO,
+"Error: Can't write to %s\n", f);
+exit(99);
+}
+return (buffer);
 }
 
 /**
- * safe_close - close files
- * @fd: file descriptor
- */
-
-void safe_close(int fd)
+* close_file - Closes file descriptors
+* @fd: File descriptor to be closed
+*/
+void close_file(int fd)
 {
-	if (close(fd) == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %i\n", fd);
-		exit(100);
-	}
+int c;
+c = close(fd);
+if (c == -1)
+{
+dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd);
+exit(100);
+}
+}
+
+/**
+* main - Copies the contents of a file to another file
+* @argc: Number of arguments
+* @argv: Array of pointers
+* Return: 0 on success
+* description: if the argument count is incorrect - exit code 97
+* if file_from does not exist or cannot be read - exit code 98
+* if file_to cannot be created or written to - exit code 99
+* if file_to or file_from cannot be closed - exit code 100
+*/
+int main(int argc, char *argv[])
+{
+int from, to, r, w;
+char *buffer;
+if (argc != 3)
+{
+dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
+exit(97);
+}
+buffer = create_buffer(argv[2]);
+from = open(argv[1], O_RDONLY);
+r = read(from, buffer, 1024);
+to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
+do {
+if (from == -1 || r == -1)
+{
+dprintf(STDERR_FILENO,
+"Error: Can't read from file %s\n", argv[1]);
+free(buffer);
+exit(98);
+}
+w = write(to, buffer, r);
+if (to == -1 || w == -1)
+{
+dprintf(STDERR_FILENO,
+"Error: Can't write to %s\n", argv[2]);
+free(buffer);
+exit(99);
+}
+r = read(from, buffer, 1024);
+to = open(argv[2], O_WRONLY | O_APPEND);
+} while (r > 0);
+free(buffer);
+close_file(from);
+close_file(to);
+return (0);
 }
